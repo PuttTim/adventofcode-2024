@@ -9,10 +9,31 @@ def check_rules(pages):
                 # print("page:", page, "rule:", l, r)
                 # print(pages.index(int(r)), pages.index(int(l)))
                 if pages.index(int(r)) <= pages.index(int(l)):
-                    print("break")
+                    print("break", page, l, r)
                     return False
     else:
         return True
+
+
+def part_two_sort(pages):
+    n = len(pages)
+    swapped = True
+
+    # bubble sort 😭
+    while swapped:
+        swapped = False
+        for i in range(n - 1):
+            need_swap = False
+            for l, r in rules:
+                if int(l) == pages[i + 1] and int(r) == pages[i]:
+                    need_swap = True
+                    break
+
+            if need_swap:
+                pages[i], pages[i + 1] = pages[i + 1], pages[i]
+                swapped = True
+
+    return pages
 
 
 p = []
@@ -36,10 +57,18 @@ with open("input.txt", "r") as file:
 print(p)
 
 c = 0
+c2 = 0
 for p2 in p:
     print(p2)
     if check_rules(p2):
         c = c + p2[len(p2) // 2]
+    else:
+        d = part_two_sort(p2)
+        print(d)
+        c2 = c2 + d[len(d) // 2]
+        print("d:", part_two_sort(p2))
+        print("s")
     # c.append(check_rules(p2))
 
 print(c)
+print(c2)
